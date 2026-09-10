@@ -1,21 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../services/auth.service";
 import { meetingService } from "../services/meeting.service";
+import { AuthContext } from "./AuthContextBase";
 
-export const AuthContext = createContext({
-    user: null,
-    token: null,
-    isAuthenticated: false,
-    loading: true,
-    userData: null,
-    setUserData: () => {},
-    handleLogin: async () => {},
-    handleRegister: async () => {},
-    handleLogout: () => {},
-    addToUserHistory: async () => {},
-    getHistoryOfUser: async () => []
-});
+export { AuthContext };
 
 export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(() => authService.getToken());
@@ -87,15 +76,4 @@ export const AuthProvider = ({ children }) => {
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-/**
- * Custom hook to consume authentication context conveniently.
- */
-export const useAuth = () => {
-    const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error("useAuth must be used within an AuthProvider");
-    }
-    return context;
-};
-
-export default AuthContext;
+export default AuthProvider;
