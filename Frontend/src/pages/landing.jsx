@@ -59,34 +59,76 @@ export default function Landing() {
 
     const features = [
         {
-            icon: <VideoCameraFrontIcon sx={{ fontSize: 36, color: "#f97316" }} />,
+            icon: <VideoCameraFrontIcon sx={{ fontSize: 32 }} />,
             title: "HD Video & Audio",
-            description: "High-definition video calling with peer-to-peer WebRTC connections and crystal-clear low-latency audio."
+            description: "High-definition video calling with peer-to-peer WebRTC connections and crystal-clear low-latency audio.",
+            tag: "1080P HD 60FPS",
+            color: "#f97316",
+            gradient: "linear-gradient(135deg, #f97316 0%, #fb923c 100%)",
+            glow: "rgba(249, 115, 22, 0.4)",
+            bgGlow: "rgba(249, 115, 22, 0.16)",
+            borderColor: "rgba(249, 115, 22, 0.35)",
+            badgeBg: "rgba(249, 115, 22, 0.12)"
         },
         {
-            icon: <ScreenShareIcon sx={{ fontSize: 36, color: "#06b6d4" }} />,
+            icon: <ScreenShareIcon sx={{ fontSize: 32 }} />,
             title: "One-Click Screen Share",
-            description: "Present your screen, slides, browser tabs, or applications seamlessly during active meetings."
+            description: "Present your screen, slides, browser tabs, or applications seamlessly during active meetings.",
+            tag: "ULTRA LOW-LATENCY",
+            color: "#06b6d4",
+            gradient: "linear-gradient(135deg, #06b6d4 0%, #38bdf8 100%)",
+            glow: "rgba(6, 182, 212, 0.4)",
+            bgGlow: "rgba(6, 182, 212, 0.16)",
+            borderColor: "rgba(6, 182, 212, 0.35)",
+            badgeBg: "rgba(6, 182, 212, 0.12)"
         },
         {
-            icon: <ChatIcon sx={{ fontSize: 36, color: "#10b981" }} />,
+            icon: <ChatIcon sx={{ fontSize: 32 }} />,
             title: "Real-Time In-Call Chat",
-            description: "Collaborate via live chat with message timestamps, unread notification badges, and sender names."
+            description: "Collaborate via live chat with message timestamps, unread notification badges, and sender names.",
+            tag: "ENCRYPTED CHANNELS",
+            color: "#10b981",
+            gradient: "linear-gradient(135deg, #10b981 0%, #34d399 100%)",
+            glow: "rgba(16, 185, 129, 0.4)",
+            bgGlow: "rgba(16, 185, 129, 0.16)",
+            borderColor: "rgba(16, 185, 129, 0.35)",
+            badgeBg: "rgba(16, 185, 129, 0.12)"
         },
         {
-            icon: <HistoryIcon sx={{ fontSize: 36, color: "#8b5cf6" }} />,
+            icon: <HistoryIcon sx={{ fontSize: 32 }} />,
             title: "Meeting Activity History",
-            description: "Keep a record of all your attended meetings with quick re-join options and date tracking."
+            description: "Keep a record of all your attended meetings with quick re-join options and date tracking.",
+            tag: "ASTRAL CLOUD SYNC",
+            color: "#8b5cf6",
+            gradient: "linear-gradient(135deg, #8b5cf6 0%, #c084fc 100%)",
+            glow: "rgba(139, 92, 246, 0.4)",
+            bgGlow: "rgba(139, 92, 246, 0.16)",
+            borderColor: "rgba(139, 92, 246, 0.35)",
+            badgeBg: "rgba(139, 92, 246, 0.12)"
         },
         {
-            icon: <SecurityIcon sx={{ fontSize: 36, color: "#ec4899" }} />,
+            icon: <SecurityIcon sx={{ fontSize: 32 }} />,
             title: "Secure Authentication",
-            description: "Password hashing with bcrypt and session token protection to safeguard user accounts."
+            description: "Password hashing with bcrypt and session token protection to safeguard user accounts.",
+            tag: "BCRYPT & JWT SHIELD",
+            color: "#ec4899",
+            gradient: "linear-gradient(135deg, #ec4899 0%, #f43f5e 100%)",
+            glow: "rgba(236, 72, 153, 0.4)",
+            bgGlow: "rgba(236, 72, 153, 0.16)",
+            borderColor: "rgba(236, 72, 153, 0.35)",
+            badgeBg: "rgba(236, 72, 153, 0.12)"
         },
         {
-            icon: <DevicesIcon sx={{ fontSize: 36, color: "#eab308" }} />,
+            icon: <DevicesIcon sx={{ fontSize: 32 }} />,
             title: "Fully Responsive",
-            description: "Optimized for seamless operation across desktop monitors, laptops, tablets, and mobile phones."
+            description: "Optimized for seamless operation across desktop monitors, laptops, tablets, and mobile phones.",
+            tag: "CROSS-PLATFORM MATRIX",
+            color: "#eab308",
+            gradient: "linear-gradient(135deg, #eab308 0%, #fbbf24 100%)",
+            glow: "rgba(234, 179, 8, 0.4)",
+            bgGlow: "rgba(234, 179, 8, 0.16)",
+            borderColor: "rgba(234, 179, 8, 0.35)",
+            badgeBg: "rgba(234, 179, 8, 0.12)"
         }
     ];
 
@@ -400,25 +442,219 @@ export default function Landing() {
                         </Typography>
                     </Box>
 
-                    <Grid container spacing={3}>
+                    <Grid container spacing={3.5}>
                         {features.map((item, idx) => (
                             <Grid item xs={12} sm={6} md={4} key={idx}>
                                 <Card
-                                    className="glass-panel glass-panel-hover"
+                                    className="glass-panel"
                                     sx={{
                                         height: "100%",
-                                        borderRadius: "20px"
+                                        borderRadius: "24px",
+                                        position: "relative",
+                                        overflow: "hidden",
+                                        backgroundColor: "var(--surface-glass)",
+                                        backdropFilter: "blur(16px)",
+                                        border: "1px solid var(--border-glass)",
+                                        transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                                        cursor: "pointer",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        justifyContent: "space-between",
+                                        "&::before": {
+                                            content: '""',
+                                            position: "absolute",
+                                            top: 0,
+                                            left: 0,
+                                            right: 0,
+                                            height: "3px",
+                                            background: item.gradient,
+                                            opacity: 0.6,
+                                            transition: "opacity 0.4s ease, height 0.4s ease"
+                                        },
+                                        "&:hover": {
+                                            transform: "translateY(-8px) scale(1.015)",
+                                            borderColor: item.borderColor,
+                                            boxShadow: `0 22px 45px -12px ${item.glow}, 0 0 25px -5px ${item.glow}`,
+                                            "&::before": {
+                                                opacity: 1,
+                                                height: "5px"
+                                            },
+                                            "& .card-radial-orb": {
+                                                transform: "scale(1.5)",
+                                                opacity: 0.85
+                                            },
+                                            "& .card-icon-box": {
+                                                transform: "scale(1.1) translateY(-3px) rotate(4deg)",
+                                                boxShadow: `0 14px 30px ${item.glow}`
+                                            },
+                                            "& .card-shine": {
+                                                transform: "translateX(300%) skewX(-25deg)"
+                                            },
+                                            "& .card-corner-bracket": {
+                                                borderColor: item.color,
+                                                opacity: 1
+                                            },
+                                            "& .card-explore-arrow": {
+                                                transform: "translateX(6px)",
+                                                color: item.color
+                                            }
+                                        }
                                     }}
                                 >
-                                    <CardContent sx={{ p: 4 }}>
-                                        <Box sx={{ mb: 2.5 }}>{item.icon}</Box>
-                                        <Typography variant="h6" sx={{ fontWeight: 800, color: "var(--text-primary)", mb: 1 }}>
+                                    {/* Diagonal Light Sweep Graphic */}
+                                    <Box
+                                        className="card-shine"
+                                        sx={{
+                                            position: "absolute",
+                                            top: 0,
+                                            left: 0,
+                                            width: "60%",
+                                            height: "100%",
+                                            background: "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent)",
+                                            transform: "translateX(-150%) skewX(-25deg)",
+                                            transition: "transform 0.85s ease",
+                                            pointerEvents: "none",
+                                            zIndex: 3
+                                        }}
+                                    />
+
+                                    {/* Ambient Colored Radial Orb Graphic */}
+                                    <Box
+                                        className="card-radial-orb"
+                                        sx={{
+                                            position: "absolute",
+                                            top: -35,
+                                            right: -35,
+                                            width: 150,
+                                            height: 150,
+                                            borderRadius: "50%",
+                                            background: `radial-gradient(circle, ${item.bgGlow} 0%, transparent 70%)`,
+                                            filter: "blur(22px)",
+                                            pointerEvents: "none",
+                                            transition: "transform 0.5s ease, opacity 0.5s ease",
+                                            opacity: 0.5,
+                                            zIndex: 0
+                                        }}
+                                    />
+
+                                    {/* Cyber Corner Bracket Graphic */}
+                                    <Box
+                                        className="card-corner-bracket"
+                                        sx={{
+                                            position: "absolute",
+                                            top: 14,
+                                            right: 14,
+                                            width: 14,
+                                            height: 14,
+                                            borderTop: "2px solid",
+                                            borderRight: "2px solid",
+                                            borderColor: "rgba(255, 255, 255, 0.18)",
+                                            opacity: 0.4,
+                                            transition: "all 0.3s ease",
+                                            pointerEvents: "none",
+                                            zIndex: 1
+                                        }}
+                                    />
+
+                                    <CardContent sx={{ p: 3.5, position: "relative", zIndex: 2 }}>
+                                        {/* Header Row: Icon Badge & Telemetry Chip */}
+                                        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 3 }}>
+                                            <Box
+                                                className="card-icon-box"
+                                                sx={{
+                                                    width: 56,
+                                                    height: 56,
+                                                    borderRadius: "16px",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                    background: `linear-gradient(135deg, ${item.bgGlow} 0%, rgba(255, 255, 255, 0.04) 100%)`,
+                                                    border: `1px solid ${item.borderColor}`,
+                                                    boxShadow: `0 8px 20px ${item.glow}`,
+                                                    color: item.color,
+                                                    transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)"
+                                                }}
+                                            >
+                                                {item.icon}
+                                            </Box>
+
+                                            <Chip
+                                                size="small"
+                                                label={item.tag}
+                                                sx={{
+                                                    backgroundColor: item.badgeBg,
+                                                    color: item.color,
+                                                    fontSize: "0.65rem",
+                                                    fontWeight: 800,
+                                                    letterSpacing: 0.8,
+                                                    border: `1px solid ${item.borderColor}`,
+                                                    height: 24,
+                                                    borderRadius: "6px"
+                                                }}
+                                            />
+                                        </Box>
+
+                                        {/* Title */}
+                                        <Typography
+                                            variant="h6"
+                                            sx={{
+                                                fontWeight: 800,
+                                                color: "var(--text-primary)",
+                                                fontSize: "1.2rem",
+                                                mb: 1.5,
+                                                letterSpacing: -0.3
+                                            }}
+                                        >
                                             {item.title}
                                         </Typography>
-                                        <Typography variant="body2" sx={{ color: "var(--text-secondary)", lineHeight: 1.65 }}>
+
+                                        {/* Description */}
+                                        <Typography
+                                            variant="body2"
+                                            sx={{
+                                                color: "var(--text-secondary)",
+                                                lineHeight: 1.7,
+                                                fontSize: "0.925rem"
+                                            }}
+                                        >
                                             {item.description}
                                         </Typography>
                                     </CardContent>
+
+                                    {/* Subtle Interactive Footer Graphic */}
+                                    <Box
+                                        sx={{
+                                            px: 3.5,
+                                            pb: 3,
+                                            pt: 0,
+                                            position: "relative",
+                                            zIndex: 2,
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: 0.8
+                                        }}
+                                    >
+                                        <Typography
+                                            variant="caption"
+                                            sx={{
+                                                fontWeight: 700,
+                                                color: "var(--text-muted)",
+                                                fontSize: "0.75rem",
+                                                letterSpacing: 0.5,
+                                                textTransform: "uppercase"
+                                            }}
+                                        >
+                                            Live Protocol
+                                        </Typography>
+                                        <ArrowForwardIcon
+                                            className="card-explore-arrow"
+                                            sx={{
+                                                fontSize: "0.9rem",
+                                                color: "var(--text-muted)",
+                                                transition: "all 0.3s ease"
+                                            }}
+                                        />
+                                    </Box>
                                 </Card>
                             </Grid>
                         ))}

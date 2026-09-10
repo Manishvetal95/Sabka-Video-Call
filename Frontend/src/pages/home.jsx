@@ -262,24 +262,124 @@ export default function HomeComponent() {
                     {/* Card 1: Start Instant Meeting */}
                     <Grid item xs={12} md={4}>
                         <Card
-                            className="glass-panel glass-panel-hover"
+                            className="glass-panel"
                             sx={{
                                 height: "100%",
-                                borderRadius: "24px"
+                                borderRadius: "24px",
+                                position: "relative",
+                                overflow: "hidden",
+                                backgroundColor: "var(--surface-glass)",
+                                backdropFilter: "blur(16px)",
+                                border: "1px solid var(--border-glass)",
+                                transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                                cursor: "pointer",
+                                "&::before": {
+                                    content: '""',
+                                    position: "absolute",
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    height: "3px",
+                                    background: "linear-gradient(135deg, #f97316 0%, #fb923c 100%)",
+                                    opacity: 0.6,
+                                    transition: "all 0.4s ease"
+                                },
+                                "&:hover": {
+                                    transform: "translateY(-8px) scale(1.015)",
+                                    borderColor: "rgba(249, 115, 22, 0.4)",
+                                    boxShadow: "0 22px 45px -12px rgba(249, 115, 22, 0.4), 0 0 25px -5px rgba(249, 115, 22, 0.3)",
+                                    "&::before": {
+                                        opacity: 1,
+                                        height: "5px"
+                                    },
+                                    "& .home-radial-orb": {
+                                        transform: "scale(1.5)",
+                                        opacity: 0.85
+                                    },
+                                    "& .home-icon-box": {
+                                        transform: "scale(1.1) translateY(-3px) rotate(4deg)",
+                                        boxShadow: "0 14px 28px rgba(249, 115, 22, 0.4)"
+                                    },
+                                    "& .home-card-shine": {
+                                        transform: "translateX(300%) skewX(-25deg)"
+                                    },
+                                    "& .home-corner-bracket": {
+                                        borderColor: "#f97316",
+                                        opacity: 1
+                                    }
+                                }
                             }}
                         >
-                            <CardContent sx={{ p: 4, display: "flex", flexDirection: "column", height: "100%" }}>
+                            {/* Diagonal Light Sweep Graphic */}
+                            <Box
+                                className="home-card-shine"
+                                sx={{
+                                    position: "absolute",
+                                    top: 0,
+                                    left: 0,
+                                    width: "60%",
+                                    height: "100%",
+                                    background: "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent)",
+                                    transform: "translateX(-150%) skewX(-25deg)",
+                                    transition: "transform 0.85s ease",
+                                    pointerEvents: "none",
+                                    zIndex: 3
+                                }}
+                            />
+
+                            {/* Radial Ambient Orb */}
+                            <Box
+                                className="home-radial-orb"
+                                sx={{
+                                    position: "absolute",
+                                    top: -35,
+                                    right: -35,
+                                    width: 150,
+                                    height: 150,
+                                    borderRadius: "50%",
+                                    background: "radial-gradient(circle, rgba(249, 115, 22, 0.18) 0%, transparent 70%)",
+                                    filter: "blur(22px)",
+                                    pointerEvents: "none",
+                                    transition: "transform 0.5s ease, opacity 0.5s ease",
+                                    opacity: 0.5,
+                                    zIndex: 0
+                                }}
+                            />
+
+                            {/* Cyber Corner Bracket Graphic */}
+                            <Box
+                                className="home-corner-bracket"
+                                sx={{
+                                    position: "absolute",
+                                    top: 14,
+                                    right: 14,
+                                    width: 14,
+                                    height: 14,
+                                    borderTop: "2px solid",
+                                    borderRight: "2px solid",
+                                    borderColor: "rgba(255, 255, 255, 0.18)",
+                                    opacity: 0.4,
+                                    transition: "all 0.3s ease",
+                                    pointerEvents: "none",
+                                    zIndex: 1
+                                }}
+                            />
+
+                            <CardContent sx={{ p: 4, display: "flex", flexDirection: "column", height: "100%", position: "relative", zIndex: 2 }}>
                                 <Box
+                                    className="home-icon-box"
                                     sx={{
                                         width: 58,
                                         height: 58,
                                         borderRadius: "16px",
-                                        backgroundColor: "rgba(249, 115, 22, 0.15)",
+                                        background: "linear-gradient(135deg, rgba(249, 115, 22, 0.2) 0%, rgba(255, 255, 255, 0.04) 100%)",
+                                        border: "1px solid rgba(249, 115, 22, 0.35)",
                                         display: "flex",
                                         alignItems: "center",
                                         justifyContent: "center",
                                         mb: 3,
-                                        boxShadow: "0 0 20px rgba(249, 115, 22, 0.3)"
+                                        boxShadow: "0 8px 20px rgba(249, 115, 22, 0.3)",
+                                        transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)"
                                     }}
                                 >
                                     <AddBoxIcon sx={{ fontSize: 32, color: "#f97316" }} />
@@ -342,24 +442,124 @@ export default function HomeComponent() {
                     {/* Card 2: Join Meeting with Code */}
                     <Grid item xs={12} md={4}>
                         <Card
-                            className="glass-panel glass-panel-hover"
+                            className="glass-panel"
                             sx={{
                                 height: "100%",
-                                borderRadius: "24px"
+                                borderRadius: "24px",
+                                position: "relative",
+                                overflow: "hidden",
+                                backgroundColor: "var(--surface-glass)",
+                                backdropFilter: "blur(16px)",
+                                border: "1px solid var(--border-glass)",
+                                transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                                cursor: "pointer",
+                                "&::before": {
+                                    content: '""',
+                                    position: "absolute",
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    height: "3px",
+                                    background: "linear-gradient(135deg, #06b6d4 0%, #38bdf8 100%)",
+                                    opacity: 0.6,
+                                    transition: "all 0.4s ease"
+                                },
+                                "&:hover": {
+                                    transform: "translateY(-8px) scale(1.015)",
+                                    borderColor: "rgba(6, 182, 212, 0.4)",
+                                    boxShadow: "0 22px 45px -12px rgba(6, 182, 212, 0.4), 0 0 25px -5px rgba(6, 182, 212, 0.3)",
+                                    "&::before": {
+                                        opacity: 1,
+                                        height: "5px"
+                                    },
+                                    "& .home-radial-orb": {
+                                        transform: "scale(1.5)",
+                                        opacity: 0.85
+                                    },
+                                    "& .home-icon-box": {
+                                        transform: "scale(1.1) translateY(-3px) rotate(4deg)",
+                                        boxShadow: "0 14px 28px rgba(6, 182, 212, 0.4)"
+                                    },
+                                    "& .home-card-shine": {
+                                        transform: "translateX(300%) skewX(-25deg)"
+                                    },
+                                    "& .home-corner-bracket": {
+                                        borderColor: "#06b6d4",
+                                        opacity: 1
+                                    }
+                                }
                             }}
                         >
-                            <CardContent sx={{ p: 4, display: "flex", flexDirection: "column", height: "100%" }}>
+                            {/* Diagonal Light Sweep Graphic */}
+                            <Box
+                                className="home-card-shine"
+                                sx={{
+                                    position: "absolute",
+                                    top: 0,
+                                    left: 0,
+                                    width: "60%",
+                                    height: "100%",
+                                    background: "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent)",
+                                    transform: "translateX(-150%) skewX(-25deg)",
+                                    transition: "transform 0.85s ease",
+                                    pointerEvents: "none",
+                                    zIndex: 3
+                                }}
+                            />
+
+                            {/* Radial Ambient Orb */}
+                            <Box
+                                className="home-radial-orb"
+                                sx={{
+                                    position: "absolute",
+                                    top: -35,
+                                    right: -35,
+                                    width: 150,
+                                    height: 150,
+                                    borderRadius: "50%",
+                                    background: "radial-gradient(circle, rgba(6, 182, 212, 0.18) 0%, transparent 70%)",
+                                    filter: "blur(22px)",
+                                    pointerEvents: "none",
+                                    transition: "transform 0.5s ease, opacity 0.5s ease",
+                                    opacity: 0.5,
+                                    zIndex: 0
+                                }}
+                            />
+
+                            {/* Cyber Corner Bracket Graphic */}
+                            <Box
+                                className="home-corner-bracket"
+                                sx={{
+                                    position: "absolute",
+                                    top: 14,
+                                    right: 14,
+                                    width: 14,
+                                    height: 14,
+                                    borderTop: "2px solid",
+                                    borderRight: "2px solid",
+                                    borderColor: "rgba(255, 255, 255, 0.18)",
+                                    opacity: 0.4,
+                                    transition: "all 0.3s ease",
+                                    pointerEvents: "none",
+                                    zIndex: 1
+                                }}
+                            />
+
+                            <CardContent sx={{ p: 4, display: "flex", flexDirection: "column", height: "100%", position: "relative", zIndex: 2 }}>
                                 <Box
+                                    className="home-icon-box"
                                     sx={{
                                         width: 58,
                                         height: 58,
                                         borderRadius: "16px",
-                                        backgroundColor: "rgba(6, 182, 212, 0.15)",
+                                        background: "linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(255, 255, 255, 0.04) 100%)",
+                                        border: "1px solid rgba(6, 182, 212, 0.35)",
                                         display: "flex",
                                         alignItems: "center",
                                         justifyContent: "center",
                                         mb: 3,
-                                        boxShadow: "0 0 20px rgba(6, 182, 212, 0.3)"
+                                        boxShadow: "0 8px 20px rgba(6, 182, 212, 0.3)",
+                                        transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)"
                                     }}
                                 >
                                     <MeetingRoomIcon sx={{ fontSize: 32, color: "#06b6d4" }} />
@@ -418,24 +618,124 @@ export default function HomeComponent() {
                     {/* Card 3: Meeting History Shortcut */}
                     <Grid item xs={12} md={4}>
                         <Card
-                            className="glass-panel glass-panel-hover"
+                            className="glass-panel"
                             sx={{
                                 height: "100%",
-                                borderRadius: "24px"
+                                borderRadius: "24px",
+                                position: "relative",
+                                overflow: "hidden",
+                                backgroundColor: "var(--surface-glass)",
+                                backdropFilter: "blur(16px)",
+                                border: "1px solid var(--border-glass)",
+                                transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                                cursor: "pointer",
+                                "&::before": {
+                                    content: '""',
+                                    position: "absolute",
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    height: "3px",
+                                    background: "linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)",
+                                    opacity: 0.6,
+                                    transition: "all 0.4s ease"
+                                },
+                                "&:hover": {
+                                    transform: "translateY(-8px) scale(1.015)",
+                                    borderColor: "rgba(139, 92, 246, 0.4)",
+                                    boxShadow: "0 22px 45px -12px rgba(139, 92, 246, 0.4), 0 0 25px -5px rgba(139, 92, 246, 0.3)",
+                                    "&::before": {
+                                        opacity: 1,
+                                        height: "5px"
+                                    },
+                                    "& .home-radial-orb": {
+                                        transform: "scale(1.5)",
+                                        opacity: 0.85
+                                    },
+                                    "& .home-icon-box": {
+                                        transform: "scale(1.1) translateY(-3px) rotate(4deg)",
+                                        boxShadow: "0 14px 28px rgba(139, 92, 246, 0.4)"
+                                    },
+                                    "& .home-card-shine": {
+                                        transform: "translateX(300%) skewX(-25deg)"
+                                    },
+                                    "& .home-corner-bracket": {
+                                        borderColor: "#8b5cf6",
+                                        opacity: 1
+                                    }
+                                }
                             }}
                         >
-                            <CardContent sx={{ p: 4, display: "flex", flexDirection: "column", height: "100%" }}>
+                            {/* Diagonal Light Sweep Graphic */}
+                            <Box
+                                className="home-card-shine"
+                                sx={{
+                                    position: "absolute",
+                                    top: 0,
+                                    left: 0,
+                                    width: "60%",
+                                    height: "100%",
+                                    background: "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent)",
+                                    transform: "translateX(-150%) skewX(-25deg)",
+                                    transition: "transform 0.85s ease",
+                                    pointerEvents: "none",
+                                    zIndex: 3
+                                }}
+                            />
+
+                            {/* Radial Ambient Orb */}
+                            <Box
+                                className="home-radial-orb"
+                                sx={{
+                                    position: "absolute",
+                                    top: -35,
+                                    right: -35,
+                                    width: 150,
+                                    height: 150,
+                                    borderRadius: "50%",
+                                    background: "radial-gradient(circle, rgba(139, 92, 246, 0.18) 0%, transparent 70%)",
+                                    filter: "blur(22px)",
+                                    pointerEvents: "none",
+                                    transition: "transform 0.5s ease, opacity 0.5s ease",
+                                    opacity: 0.5,
+                                    zIndex: 0
+                                }}
+                            />
+
+                            {/* Cyber Corner Bracket Graphic */}
+                            <Box
+                                className="home-corner-bracket"
+                                sx={{
+                                    position: "absolute",
+                                    top: 14,
+                                    right: 14,
+                                    width: 14,
+                                    height: 14,
+                                    borderTop: "2px solid",
+                                    borderRight: "2px solid",
+                                    borderColor: "rgba(255, 255, 255, 0.18)",
+                                    opacity: 0.4,
+                                    transition: "all 0.3s ease",
+                                    pointerEvents: "none",
+                                    zIndex: 1
+                                }}
+                            />
+
+                            <CardContent sx={{ p: 4, display: "flex", flexDirection: "column", height: "100%", position: "relative", zIndex: 2 }}>
                                 <Box
+                                    className="home-icon-box"
                                     sx={{
                                         width: 58,
                                         height: 58,
                                         borderRadius: "16px",
-                                        backgroundColor: "rgba(139, 92, 246, 0.15)",
+                                        background: "linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(255, 255, 255, 0.04) 100%)",
+                                        border: "1px solid rgba(139, 92, 246, 0.35)",
                                         display: "flex",
                                         alignItems: "center",
                                         justifyContent: "center",
                                         mb: 3,
-                                        boxShadow: "0 0 20px rgba(139, 92, 246, 0.3)"
+                                        boxShadow: "0 8px 20px rgba(139, 92, 246, 0.3)",
+                                        transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)"
                                     }}
                                 >
                                     <HistoryIcon sx={{ fontSize: 32, color: "#8b5cf6" }} />
