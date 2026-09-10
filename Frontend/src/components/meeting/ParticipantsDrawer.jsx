@@ -37,9 +37,10 @@ export const ParticipantsDrawer = ({
             PaperProps={{
                 sx: {
                     width: { xs: "100%", sm: 340 },
-                    backgroundColor: "#0f172a",
-                    color: "#f8fafc",
-                    borderLeft: "1px solid rgba(255, 255, 255, 0.1)"
+                    backgroundColor: "var(--bg-secondary)",
+                    color: "var(--text-primary)",
+                    borderLeft: "1px solid var(--border-glass)",
+                    backdropFilter: "blur(16px)"
                 }
             }}
         >
@@ -50,14 +51,15 @@ export const ParticipantsDrawer = ({
                     alignItems: "center",
                     justifyContent: "space-between",
                     p: 2,
-                    borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
-                    backgroundColor: "rgba(15, 23, 42, 0.95)"
+                    borderBottom: "1px solid var(--border-glass)",
+                    backgroundColor: "var(--surface-glass)",
+                    backdropFilter: "blur(10px)"
                 }}
             >
-                <Typography variant="h6" sx={{ fontWeight: 700, fontSize: "1.05rem" }}>
-                    Participants ({totalCount})
+                <Typography variant="h6" sx={{ fontWeight: 700, fontSize: "1.05rem", color: "var(--text-primary)" }}>
+                    Flight Crew ({totalCount})
                 </Typography>
-                <IconButton onClick={onClose} sx={{ color: "#94a3b8", "&:hover": { color: "#ffffff" } }} aria-label="close participants">
+                <IconButton onClick={onClose} sx={{ color: "var(--text-muted)", "&:hover": { color: "var(--text-primary)" } }} aria-label="close participants">
                     <CloseIcon fontSize="small" />
                 </IconButton>
             </Box>
@@ -67,7 +69,8 @@ export const ParticipantsDrawer = ({
                 {/* Local User */}
                 <ListItem
                     sx={{
-                        backgroundColor: "rgba(255, 255, 255, 0.04)",
+                        backgroundColor: "var(--bg-card)",
+                        border: "1px solid var(--border-glass)",
                         borderRadius: "10px",
                         mb: 1.5,
                         px: 2,
@@ -75,24 +78,24 @@ export const ParticipantsDrawer = ({
                     }}
                 >
                     <ListItemAvatar>
-                        <Avatar sx={{ bgcolor: "#f97316", width: 36, height: 36, fontWeight: 700, fontSize: "0.9rem" }}>
+                        <Avatar sx={{ bgcolor: "var(--accent-orange)", width: 36, height: 36, fontWeight: 700, fontSize: "0.9rem" }}>
                             {localUsername.charAt(0).toUpperCase()}
                         </Avatar>
                     </ListItemAvatar>
                     <ListItemText
                         primary={
                             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                <Typography variant="body2" sx={{ fontWeight: 700, color: "#ffffff" }}>
+                                <Typography variant="body2" sx={{ fontWeight: 700, color: "var(--text-primary)" }}>
                                     {localUsername} (You)
                                 </Typography>
-                                <Chip label="Host" size="small" sx={{ height: 18, fontSize: "0.65rem", backgroundColor: "rgba(249, 115, 22, 0.2)", color: "#fb923c" }} />
+                                <Chip label="Host" size="small" sx={{ height: 18, fontSize: "0.65rem", backgroundColor: "rgba(249, 115, 22, 0.2)", color: "var(--accent-orange)" }} />
                                 {isHandRaised && <PanToolIcon sx={{ fontSize: 16, color: "#eab308" }} />}
                             </Box>
                         }
                     />
                     <Box sx={{ display: "flex", gap: 0.5 }}>
                         {isAudioMuted ? <MicOffIcon sx={{ fontSize: 18, color: "#ef4444" }} /> : <MicIcon sx={{ fontSize: 18, color: "#22c55e" }} />}
-                        {isVideoMuted ? <VideocamOffIcon sx={{ fontSize: 18, color: "#ef4444" }} /> : <VideocamIcon sx={{ fontSize: 18, color: "#38bdf8" }} />}
+                        {isVideoMuted ? <VideocamOffIcon sx={{ fontSize: 18, color: "#ef4444" }} /> : <VideocamIcon sx={{ fontSize: 18, color: "var(--accent-cyan)" }} />}
                     </Box>
                 </ListItem>
 
@@ -101,7 +104,8 @@ export const ParticipantsDrawer = ({
                     <ListItem
                         key={p.socketId || idx}
                         sx={{
-                            backgroundColor: "rgba(255, 255, 255, 0.02)",
+                            backgroundColor: "var(--bg-card)",
+                            border: "1px solid var(--border-glass)",
                             borderRadius: "10px",
                             mb: 1,
                             px: 2,
@@ -109,20 +113,20 @@ export const ParticipantsDrawer = ({
                         }}
                     >
                         <ListItemAvatar>
-                            <Avatar sx={{ bgcolor: "#3b82f6", width: 36, height: 36, fontWeight: 700, fontSize: "0.9rem" }}>
+                            <Avatar sx={{ bgcolor: "var(--accent-blue)", width: 36, height: 36, fontWeight: 700, fontSize: "0.9rem" }}>
                                 {(p.username || "P").charAt(0).toUpperCase()}
                             </Avatar>
                         </ListItemAvatar>
                         <ListItemText
                             primary={
-                                <Typography variant="body2" sx={{ fontWeight: 600, color: "#ffffff" }}>
+                                <Typography variant="body2" sx={{ fontWeight: 600, color: "var(--text-primary)" }}>
                                     {p.username || `Participant ${idx + 1}`}
                                 </Typography>
                             }
                         />
                         <Box sx={{ display: "flex", gap: 0.5 }}>
                             <MicIcon sx={{ fontSize: 18, color: "#22c55e" }} />
-                            <VideocamIcon sx={{ fontSize: 18, color: "#38bdf8" }} />
+                            <VideocamIcon sx={{ fontSize: 18, color: "var(--accent-cyan)" }} />
                         </Box>
                     </ListItem>
                 ))}

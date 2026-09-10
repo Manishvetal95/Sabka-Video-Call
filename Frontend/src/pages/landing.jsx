@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import {
     Box,
@@ -27,12 +27,24 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import CloseIcon from "@mui/icons-material/Close";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import SpaceBackground from "../components/common/SpaceBackground";
+import ThemeToggle from "../components/common/ThemeToggle";
 
 export default function Landing() {
     const navigate = useNavigate();
     const [openJoinModal, setOpenJoinModal] = useState(false);
     const [joinCode, setJoinCode] = useState("");
     const [joinError, setJoinError] = useState("");
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            setScrolled(window.scrollY > 40);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     const handleQuickJoin = (e) => {
         e.preventDefault();
@@ -52,7 +64,7 @@ export default function Landing() {
             description: "High-definition video calling with peer-to-peer WebRTC connections and crystal-clear low-latency audio."
         },
         {
-            icon: <ScreenShareIcon sx={{ fontSize: 36, color: "#3b82f6" }} />,
+            icon: <ScreenShareIcon sx={{ fontSize: 36, color: "#06b6d4" }} />,
             title: "One-Click Screen Share",
             description: "Present your screen, slides, browser tabs, or applications seamlessly during active meetings."
         },
@@ -81,33 +93,36 @@ export default function Landing() {
     const steps = [
         {
             step: "01",
-            title: "Create or Join",
+            title: "Launch Room",
             description: "Start an instant video meeting or enter a 6-digit meeting code provided by your team."
         },
         {
             step: "02",
-            title: "Share Invite Link",
+            title: "Beam Invite",
             description: "Copy your unique meeting link or code with one click and share it with participants."
         },
         {
             step: "03",
-            title: "Collaborate in Real Time",
-            description: "Turn on your camera and mic, share your screen, and chat live without time limits."
+            title: "Sync & Collaborate",
+            description: "Turn on your camera and mic, share your screen, and chat live across any device."
         }
     ];
 
     const techStack = [
         { name: "React 19", role: "Frontend UI" },
         { name: "Vite 8", role: "Bundler" },
+        { name: "WebRTC", role: "P2P Streams" },
+        { name: "Socket.IO", role: "WebSockets" },
         { name: "Node.js", role: "Runtime" },
         { name: "Express.js", role: "REST API" },
-        { name: "Socket.IO", role: "WebSockets" },
-        { name: "WebRTC", role: "Media Streams" },
         { name: "MongoDB", role: "Database" }
     ];
 
     return (
-        <Box sx={{ minHeight: "100vh", backgroundColor: "#0b0f19", color: "#f8fafc", overflowX: "hidden" }}>
+        <Box sx={{ position: "relative", minHeight: "100vh", color: "var(--text-primary)", overflowX: "hidden" }}>
+            {/* Animated Space & Nebula Background */}
+            <SpaceBackground />
+
             {/* Navigation Header */}
             <Box
                 component="header"
@@ -115,9 +130,11 @@ export default function Landing() {
                     position: "sticky",
                     top: 0,
                     zIndex: 1100,
-                    backdropFilter: "blur(12px)",
-                    backgroundColor: "rgba(11, 15, 25, 0.8)",
-                    borderBottom: "1px solid rgba(255, 255, 255, 0.08)"
+                    backdropFilter: scrolled ? "blur(16px)" : "blur(8px)",
+                    backgroundColor: scrolled ? "var(--surface-glass)" : "transparent",
+                    borderBottom: "1px solid",
+                    borderColor: scrolled ? "var(--border)" : "transparent",
+                    transition: "all 0.3s ease"
                 }}
             >
                 <Container maxWidth="lg">
@@ -143,47 +160,68 @@ export default function Landing() {
                         >
                             <Box
                                 sx={{
-                                    width: 40,
-                                    height: 40,
-                                    borderRadius: "10px",
-                                    backgroundColor: "#f97316",
+                                    width: 42,
+                                    height: 42,
+                                    borderRadius: "12px",
+                                    background: "linear-gradient(135deg, #f97316 0%, #ec4899 100%)",
                                     display: "flex",
                                     alignItems: "center",
-                                    justifyContent: "center"
+                                    justifyContent: "center",
+                                    boxShadow: "0 0 20px rgba(249, 115, 22, 0.5)"
                                 }}
                             >
                                 <VideoCameraFrontIcon sx={{ color: "#ffffff", fontSize: 24 }} />
                             </Box>
-                            <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: -0.5 }}>
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    fontWeight: 800,
+                                    letterSpacing: -0.5,
+                                    background: "linear-gradient(90deg, #f8fafc, #cbd5e1)",
+                                    WebkitBackgroundClip: "text",
+                                    WebkitTextFillColor: "var(--text-primary)"
+                                }}
+                            >
                                 Sabka Video Call
                             </Typography>
                         </Box>
 
                         {/* Nav Actions */}
                         <Stack direction="row" spacing={{ xs: 1, sm: 2 }} alignItems="center">
+                            <ThemeToggle />
+
                             <Button
                                 variant="text"
                                 onClick={() => setOpenJoinModal(true)}
                                 sx={{
-                                    color: "#94a3b8",
-                                    "&:hover": { color: "#ffffff" },
+                                    color: "var(--text-secondary)",
+                                    "&:hover": { color: "var(--text-primary)" },
                                     textTransform: "none",
-                                    fontWeight: 600
+                                    fontWeight: 600,
+                                    fontSize: "0.95rem"
                                 }}
                             >
                                 Join as Guest
                             </Button>
+
                             <Button
                                 component={RouterLink}
                                 to="/auth"
                                 variant="contained"
                                 sx={{
-                                    backgroundColor: "#f97316",
-                                    "&:hover": { backgroundColor: "#ea580c" },
+                                    background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
+                                    "&:hover": {
+                                        background: "linear-gradient(135deg, #fb923c 0%, #f97316 100%)",
+                                        boxShadow: "0 0 20px rgba(249, 115, 22, 0.6)",
+                                        transform: "translateY(-1px)"
+                                    },
                                     textTransform: "none",
                                     fontWeight: 700,
-                                    borderRadius: "8px",
-                                    px: { xs: 2, sm: 3 }
+                                    borderRadius: "10px",
+                                    px: { xs: 2, sm: 3 },
+                                    py: 1,
+                                    boxShadow: "0 4px 15px rgba(249, 115, 22, 0.3)",
+                                    transition: "all 0.2s ease"
                                 }}
                             >
                                 Sign In
@@ -196,58 +234,60 @@ export default function Landing() {
             {/* Hero Section */}
             <Box
                 sx={{
-                    pt: { xs: 8, md: 14 },
-                    pb: { xs: 10, md: 16 },
                     position: "relative",
-                    background: "radial-gradient(circle at 50% 20%, rgba(249, 115, 22, 0.12) 0%, transparent 60%)"
+                    zIndex: 1,
+                    pt: { xs: 8, md: 14 },
+                    pb: { xs: 10, md: 16 }
                 }}
             >
                 <Container maxWidth="lg">
                     <Grid container spacing={6} alignItems="center">
                         <Grid item xs={12} md={7}>
                             <Chip
-                                label="🚀 Free & Unlimited Real-Time Conferencing"
+                                icon={<AutoAwesomeIcon sx={{ fontSize: "1rem !important", color: "#f97316 !important" }} />}
+                                label="Cinematic Space Conferencing"
                                 sx={{
                                     backgroundColor: "rgba(249, 115, 22, 0.12)",
                                     color: "#fb923c",
-                                    fontWeight: 600,
+                                    fontWeight: 700,
+                                    letterSpacing: 0.5,
                                     mb: 3,
-                                    border: "1px solid rgba(249, 115, 22, 0.25)"
+                                    border: "1px solid rgba(249, 115, 22, 0.3)",
+                                    backdropFilter: "blur(8px)"
                                 }}
                             />
+
                             <Typography
                                 variant="h1"
                                 sx={{
-                                    fontSize: { xs: "2.5rem", sm: "3.5rem", md: "4.2rem" },
-                                    fontWeight: 800,
-                                    lineHeight: 1.1,
+                                    fontSize: { xs: "2.8rem", sm: "3.8rem", md: "4.6rem" },
+                                    fontWeight: 900,
+                                    lineHeight: 1.05,
                                     letterSpacing: -1.5,
-                                    mb: 3
+                                    mb: 2.5
                                 }}
                             >
-                                Connect. Collaborate.{" "}
-                                <Box
-                                    component="span"
-                                    sx={{
-                                        background: "linear-gradient(90deg, #f97316 0%, #fb923c 100%)",
-                                        WebkitBackgroundClip: "text",
-                                        WebkitTextFillColor: "transparent"
-                                    }}
-                                >
-                                    Anywhere.
+                                CONNECT.
+                                <br />
+                                COLLABORATE.
+                                <br />
+                                <Box component="span" className="heroic-text">
+                                    ANYWHERE.
                                 </Box>
                             </Typography>
+
                             <Typography
                                 variant="h6"
                                 sx={{
-                                    color: "#94a3b8",
+                                    color: "var(--text-secondary)",
                                     fontWeight: 400,
                                     lineHeight: 1.6,
-                                    mb: 4,
-                                    maxWidth: 560
+                                    mb: 4.5,
+                                    maxWidth: 540,
+                                    fontSize: { xs: "1rem", sm: "1.15rem" }
                                 }}
                             >
-                                Experience frictionless video conferencing with crystal-clear WebRTC media streams, screen sharing, and real-time chat built for everyone.
+                                Your meetings, reimagined beyond boundaries. Experience ultra low-latency WebRTC streams, one-click screen sharing, and real-time cosmic chat.
                             </Typography>
 
                             <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
@@ -258,49 +298,62 @@ export default function Landing() {
                                     size="large"
                                     endIcon={<ArrowForwardIcon />}
                                     sx={{
-                                        backgroundColor: "#f97316",
-                                        "&:hover": { backgroundColor: "#ea580c" },
-                                        fontWeight: 700,
-                                        py: 1.5,
+                                        background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
+                                        "&:hover": {
+                                            background: "linear-gradient(135deg, #fb923c 0%, #f97316 100%)",
+                                            boxShadow: "0 0 25px rgba(249, 115, 22, 0.6)",
+                                            transform: "translateY(-2px)"
+                                        },
+                                        fontWeight: 800,
+                                        py: 1.6,
                                         px: 4,
-                                        borderRadius: "10px",
+                                        borderRadius: "12px",
                                         textTransform: "none",
-                                        fontSize: "1.05rem"
+                                        fontSize: "1.05rem",
+                                        boxShadow: "0 10px 25px -5px rgba(249, 115, 22, 0.4)",
+                                        transition: "all 0.2s ease"
                                     }}
                                 >
-                                    Start Meeting Free
+                                    ✦ Start Meeting Free
                                 </Button>
+
                                 <Button
                                     variant="outlined"
                                     size="large"
                                     onClick={() => setOpenJoinModal(true)}
                                     startIcon={<PlayArrowIcon />}
                                     sx={{
-                                        borderColor: "rgba(255, 255, 255, 0.2)",
-                                        color: "#ffffff",
+                                        borderColor: "var(--border)",
+                                        backgroundColor: "var(--surface-glass)",
+                                        backdropFilter: "blur(10px)",
+                                        color: "var(--text-primary)",
                                         "&:hover": {
-                                            borderColor: "#ffffff",
-                                            backgroundColor: "rgba(255, 255, 255, 0.05)"
+                                            borderColor: "var(--border-hover)",
+                                            backgroundColor: "rgba(255, 255, 255, 0.08)",
+                                            boxShadow: "0 0 15px var(--border-glow)",
+                                            transform: "translateY(-2px)"
                                         },
-                                        fontWeight: 600,
-                                        py: 1.5,
+                                        fontWeight: 700,
+                                        py: 1.6,
                                         px: 3,
-                                        borderRadius: "10px",
+                                        borderRadius: "12px",
                                         textTransform: "none",
-                                        fontSize: "1.05rem"
+                                        fontSize: "1.05rem",
+                                        transition: "all 0.2s ease"
                                     }}
                                 >
                                     Join with Code
                                 </Button>
                             </Stack>
 
-                            <Stack direction="row" spacing={3} sx={{ mt: 5, color: "#64748b", fontSize: "0.875rem" }}>
-                                <span>✓ No card required</span>
-                                <span>✓ Instant browser access</span>
-                                <span>✓ 100% Free</span>
+                            <Stack direction="row" spacing={3} sx={{ mt: 5, color: "var(--text-muted)", fontSize: "0.875rem" }}>
+                                <span>✦ Zero latency drop</span>
+                                <span>✦ Instant browser access</span>
+                                <span>✦ Free forever</span>
                             </Stack>
                         </Grid>
 
+                        {/* Hero Preview Card */}
                         <Grid item xs={12} md={5}>
                             <Box
                                 sx={{
@@ -312,14 +365,18 @@ export default function Landing() {
                                 <Box
                                     component="img"
                                     src="/mobile.png"
-                                    alt="Sabka Video Call Preview"
+                                    alt="Sabka Video Call Cosmic Experience"
                                     sx={{
                                         width: "100%",
                                         maxWidth: 380,
                                         height: "auto",
-                                        borderRadius: "24px",
-                                        boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 40px rgba(249, 115, 22, 0.15)",
-                                        border: "1px solid rgba(255, 255, 255, 0.1)"
+                                        borderRadius: "28px",
+                                        boxShadow: "0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px rgba(99, 102, 241, 0.3)",
+                                        border: "1px solid rgba(255, 255, 255, 0.15)",
+                                        transition: "transform 0.3s ease",
+                                        "&:hover": {
+                                            transform: "scale(1.02)"
+                                        }
                                     }}
                                 />
                             </Box>
@@ -329,17 +386,17 @@ export default function Landing() {
             </Box>
 
             {/* Features Section */}
-            <Box id="features" sx={{ py: 12, backgroundColor: "#0f1523", borderTop: "1px solid rgba(255, 255, 255, 0.05)" }}>
+            <Box id="features" sx={{ position: "relative", zIndex: 1, py: 12, borderTop: "1px solid var(--border)" }}>
                 <Container maxWidth="lg">
                     <Box sx={{ textAlign: "center", mb: 8 }}>
-                        <Typography variant="overline" sx={{ color: "#f97316", fontWeight: 700, letterSpacing: 1.5 }}>
-                            POWERFUL FEATURES
+                        <Typography variant="overline" sx={{ color: "var(--accent-orange)", fontWeight: 800, letterSpacing: 2 }}>
+                            SUPERHERO-GRADE CAPABILITIES
                         </Typography>
-                        <Typography variant="h3" sx={{ fontWeight: 800, mt: 1, letterSpacing: -1 }}>
-                            Everything You Need for Productive Calls
+                        <Typography variant="h3" sx={{ fontWeight: 900, mt: 1, letterSpacing: -1 }}>
+                            Engineered for Planetary Collaboration
                         </Typography>
-                        <Typography variant="body1" sx={{ color: "#94a3b8", mt: 1.5, maxWidth: 600, mx: "auto" }}>
-                            Built on standard open WebRTC protocols for fast, secure, and intuitive virtual collaboration.
+                        <Typography variant="body1" sx={{ color: "var(--text-secondary)", mt: 1.5, maxWidth: 620, mx: "auto" }}>
+                            Built directly on modern WebRTC protocols with encrypted signaling and peer-to-peer real-time data channels.
                         </Typography>
                     </Box>
 
@@ -347,24 +404,18 @@ export default function Landing() {
                         {features.map((item, idx) => (
                             <Grid item xs={12} sm={6} md={4} key={idx}>
                                 <Card
+                                    className="glass-panel glass-panel-hover"
                                     sx={{
                                         height: "100%",
-                                        backgroundColor: "rgba(255, 255, 255, 0.02)",
-                                        border: "1px solid rgba(255, 255, 255, 0.08)",
-                                        borderRadius: "16px",
-                                        transition: "transform 0.2s, border-color 0.2s",
-                                        "&:hover": {
-                                            transform: "translateY(-4px)",
-                                            borderColor: "rgba(249, 115, 22, 0.4)"
-                                        }
+                                        borderRadius: "20px"
                                     }}
                                 >
                                     <CardContent sx={{ p: 4 }}>
-                                        <Box sx={{ mb: 2 }}>{item.icon}</Box>
-                                        <Typography variant="h6" sx={{ fontWeight: 700, color: "#ffffff", mb: 1 }}>
+                                        <Box sx={{ mb: 2.5 }}>{item.icon}</Box>
+                                        <Typography variant="h6" sx={{ fontWeight: 800, color: "var(--text-primary)", mb: 1 }}>
                                             {item.title}
                                         </Typography>
-                                        <Typography variant="body2" sx={{ color: "#94a3b8", lineHeight: 1.6 }}>
+                                        <Typography variant="body2" sx={{ color: "var(--text-secondary)", lineHeight: 1.65 }}>
                                             {item.description}
                                         </Typography>
                                     </CardContent>
@@ -376,14 +427,14 @@ export default function Landing() {
             </Box>
 
             {/* How It Works Section */}
-            <Box sx={{ py: 12 }}>
+            <Box sx={{ position: "relative", zIndex: 1, py: 12 }}>
                 <Container maxWidth="lg">
                     <Box sx={{ textAlign: "center", mb: 8 }}>
-                        <Typography variant="overline" sx={{ color: "#f97316", fontWeight: 700, letterSpacing: 1.5 }}>
-                            SIMPLE WORKFLOW
+                        <Typography variant="overline" sx={{ color: "var(--accent-cyan)", fontWeight: 800, letterSpacing: 2 }}>
+                            MISSION PROTOCOL
                         </Typography>
-                        <Typography variant="h3" sx={{ fontWeight: 800, mt: 1, letterSpacing: -1 }}>
-                            How It Works in 3 Quick Steps
+                        <Typography variant="h3" sx={{ fontWeight: 900, mt: 1, letterSpacing: -1 }}>
+                            3 Steps to Launch Your Conference
                         </Typography>
                     </Box>
 
@@ -391,28 +442,31 @@ export default function Landing() {
                         {steps.map((step, idx) => (
                             <Grid item xs={12} md={4} key={idx}>
                                 <Box
+                                    className="glass-panel"
                                     sx={{
                                         p: 4,
-                                        borderRadius: "16px",
-                                        backgroundColor: "rgba(255, 255, 255, 0.02)",
-                                        border: "1px solid rgba(255, 255, 255, 0.06)",
-                                        height: "100%"
+                                        borderRadius: "20px",
+                                        height: "100%",
+                                        transition: "transform 0.2s ease",
+                                        "&:hover": { transform: "translateY(-4px)" }
                                     }}
                                 >
                                     <Typography
                                         variant="h3"
                                         sx={{
                                             fontWeight: 900,
-                                            color: "rgba(249, 115, 22, 0.3)",
+                                            background: "linear-gradient(135deg, #06b6d4, #8b5cf6)",
+                                            WebkitBackgroundClip: "text",
+                                            WebkitTextFillColor: "transparent",
                                             mb: 2
                                         }}
                                     >
                                         {step.step}
                                     </Typography>
-                                    <Typography variant="h6" sx={{ fontWeight: 700, color: "#ffffff", mb: 1 }}>
+                                    <Typography variant="h6" sx={{ fontWeight: 800, color: "var(--text-primary)", mb: 1 }}>
                                         {step.title}
                                     </Typography>
-                                    <Typography variant="body2" sx={{ color: "#94a3b8", lineHeight: 1.6 }}>
+                                    <Typography variant="body2" sx={{ color: "var(--text-secondary)", lineHeight: 1.65 }}>
                                         {step.description}
                                     </Typography>
                                 </Box>
@@ -423,27 +477,31 @@ export default function Landing() {
             </Box>
 
             {/* Technology Stack Showcase */}
-            <Box sx={{ py: 8, backgroundColor: "#0f1523", borderTop: "1px solid rgba(255, 255, 255, 0.05)" }}>
+            <Box sx={{ position: "relative", zIndex: 1, py: 8, borderTop: "1px solid var(--border)" }}>
                 <Container maxWidth="lg">
-                    <Typography variant="subtitle1" sx={{ textAlign: "center", color: "#64748b", mb: 4, fontWeight: 600 }}>
-                        POWERED BY MODERN WEB TECHNOLOGIES
+                    <Typography variant="subtitle1" sx={{ textAlign: "center", color: "var(--text-muted)", mb: 4, fontWeight: 700, letterSpacing: 1.5 }}>
+                        POWERED BY CUTTING-EDGE TECHNOLOGIES
                     </Typography>
                     <Grid container spacing={2} justifyContent="center">
                         {techStack.map((tech, idx) => (
                             <Grid item xs={6} sm={4} md={2.4} key={idx}>
                                 <Box
+                                    className="glass-panel"
                                     sx={{
-                                        p: 2,
+                                        p: 2.5,
                                         textAlign: "center",
-                                        borderRadius: "12px",
-                                        border: "1px solid rgba(255, 255, 255, 0.05)",
-                                        backgroundColor: "rgba(255, 255, 255, 0.02)"
+                                        borderRadius: "14px",
+                                        transition: "all 0.2s ease",
+                                        "&:hover": {
+                                            borderColor: "var(--border-hover)",
+                                            boxShadow: "0 0 15px var(--border-glow)"
+                                        }
                                     }}
                                 >
-                                    <Typography variant="subtitle2" sx={{ fontWeight: 700, color: "#f8fafc" }}>
+                                    <Typography variant="subtitle2" sx={{ fontWeight: 800, color: "var(--text-primary)" }}>
                                         {tech.name}
                                     </Typography>
-                                    <Typography variant="caption" sx={{ color: "#64748b" }}>
+                                    <Typography variant="caption" sx={{ color: "var(--text-muted)" }}>
                                         {tech.role}
                                     </Typography>
                                 </Box>
@@ -457,9 +515,11 @@ export default function Landing() {
             <Box
                 component="footer"
                 sx={{
+                    position: "relative",
+                    zIndex: 1,
                     py: 6,
-                    borderTop: "1px solid rgba(255, 255, 255, 0.08)",
-                    backgroundColor: "#080c14"
+                    borderTop: "1px solid var(--border)",
+                    backgroundColor: "var(--surface)"
                 }}
             >
                 <Container maxWidth="lg">
@@ -473,14 +533,14 @@ export default function Landing() {
                         }}
                     >
                         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                            <VideoCameraFrontIcon sx={{ color: "#f97316", fontSize: 24 }} />
-                            <Typography variant="body1" sx={{ fontWeight: 700 }}>
+                            <VideoCameraFrontIcon sx={{ color: "var(--accent-orange)", fontSize: 24 }} />
+                            <Typography variant="body1" sx={{ fontWeight: 800 }}>
                                 Sabka Video Call
                             </Typography>
                         </Box>
 
-                        <Typography variant="body2" sx={{ color: "#64748b", textAlign: "center" }}>
-                            © {new Date().getFullYear()} Sabka Video Call. Built with React, Node, Express & WebSockets.
+                        <Typography variant="body2" sx={{ color: "var(--text-muted)", textAlign: "center" }}>
+                            © {new Date().getFullYear()} Sabka Video Call. Futuristic real-time conferencing in space.
                         </Typography>
 
                         <Box sx={{ display: "flex", gap: 2 }}>
@@ -490,7 +550,7 @@ export default function Landing() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label="GitHub Repository"
-                                sx={{ color: "#94a3b8", "&:hover": { color: "#ffffff" } }}
+                                sx={{ color: "var(--text-secondary)", "&:hover": { color: "var(--text-primary)" } }}
                             >
                                 <GitHubIcon />
                             </IconButton>
@@ -505,33 +565,36 @@ export default function Landing() {
                 onClose={() => setOpenJoinModal(false)}
                 PaperProps={{
                     sx: {
-                        backgroundColor: "#161e2e",
-                        color: "#f8fafc",
-                        borderRadius: "16px",
+                        backgroundColor: "var(--surface)",
+                        backdropFilter: "blur(16px)",
+                        color: "var(--text-primary)",
+                        borderRadius: "20px",
+                        border: "1px solid var(--border)",
                         p: 1,
                         maxWidth: 420,
-                        width: "100%"
+                        width: "100%",
+                        boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.7)"
                     }
                 }}
             >
                 <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <Typography variant="h6" sx={{ fontWeight: 700 }}>
+                    <Typography variant="h6" sx={{ fontWeight: 800 }}>
                         Join a Meeting
                     </Typography>
-                    <IconButton onClick={() => setOpenJoinModal(false)} sx={{ color: "#94a3b8" }} aria-label="close modal">
+                    <IconButton onClick={() => setOpenJoinModal(false)} sx={{ color: "var(--text-muted)" }} aria-label="close modal">
                         <CloseIcon />
                     </IconButton>
                 </DialogTitle>
 
                 <Box component="form" onSubmit={handleQuickJoin}>
                     <DialogContent>
-                        <Typography variant="body2" sx={{ color: "#94a3b8", mb: 2 }}>
-                            Enter the meeting code or ID shared by the host:
+                        <Typography variant="body2" sx={{ color: "var(--text-secondary)", mb: 2 }}>
+                            Enter the meeting code or ID shared by your team:
                         </Typography>
                         <TextField
                             autoFocus
                             fullWidth
-                            placeholder="e.g. team-sync-101"
+                            placeholder="e.g. mission-101"
                             value={joinCode}
                             onChange={(e) => {
                                 setJoinCode(e.target.value);
@@ -541,11 +604,8 @@ export default function Landing() {
                             helperText={joinError}
                             sx={{
                                 backgroundColor: "rgba(255, 255, 255, 0.05)",
-                                borderRadius: "8px",
-                                input: { color: "#ffffff" },
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                    borderColor: "rgba(255, 255, 255, 0.2)"
-                                }
+                                borderRadius: "10px",
+                                input: { color: "var(--text-primary)" }
                             }}
                         />
                     </DialogContent>
@@ -555,11 +615,15 @@ export default function Landing() {
                             variant="contained"
                             fullWidth
                             sx={{
-                                backgroundColor: "#f97316",
-                                "&:hover": { backgroundColor: "#ea580c" },
-                                py: 1.2,
-                                fontWeight: 700,
-                                textTransform: "none"
+                                background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
+                                "&:hover": {
+                                    background: "linear-gradient(135deg, #fb923c 0%, #f97316 100%)",
+                                    boxShadow: "0 0 20px rgba(249, 115, 22, 0.6)"
+                                },
+                                py: 1.3,
+                                fontWeight: 800,
+                                textTransform: "none",
+                                borderRadius: "10px"
                             }}
                         >
                             Join Call

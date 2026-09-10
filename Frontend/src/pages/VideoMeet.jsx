@@ -18,6 +18,9 @@ import MeetingControls from "../components/meeting/MeetingControls";
 import LobbyPreview from "../components/meeting/LobbyPreview";
 import ChatDrawer from "../components/chat/ChatDrawer";
 import ParticipantsDrawer from "../components/meeting/ParticipantsDrawer";
+import SpaceBackground from "../components/common/SpaceBackground";
+import ThemeToggle from "../components/common/ThemeToggle";
+import LeaveMeetingModal from "../components/common/LeaveMeetingModal";
 
 export default function VideoMeetComponent() {
     const { url } = useParams();
@@ -47,6 +50,7 @@ export default function VideoMeetComponent() {
     const [unreadCount, setUnreadCount] = useState(0);
     const [snackbar, setSnackbar] = useState({ open: false, message: "" });
     const [connectionStatus, setConnectionStatus] = useState("Connecting");
+    const [openLeaveModal, setOpenLeaveModal] = useState(false);
 
     // References (prevents stale closure issues and unneeded re-renders)
     const socketRef = useRef(null);
@@ -439,6 +443,11 @@ export default function VideoMeetComponent() {
 
     // 11. End Call / Leave
     const handleEndCall = () => {
+        setOpenLeaveModal(true);
+    };
+
+    const confirmEndCall = () => {
+        setOpenLeaveModal(false);
         if (localStream) {
             localStream.getTracks().forEach((t) => t.stop());
         }
@@ -475,13 +484,15 @@ export default function VideoMeetComponent() {
                 position: "relative",
                 width: "100vw",
                 height: "100vh",
-                backgroundColor: "#080c14",
-                color: "#f8fafc",
+                backgroundColor: "var(--bg-primary)",
+                color: "var(--text-primary)",
                 display: "flex",
                 flexDirection: "column",
                 overflow: "hidden"
             }}
         >
+            <SpaceBackground />
+
             {/* Meeting Header Bar */}
             <Box
                 sx={{
@@ -489,14 +500,15 @@ export default function VideoMeetComponent() {
                     alignItems: "center",
                     justifyContent: "space-between",
                     p: 2,
-                    borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
-                    backgroundColor: "rgba(11, 15, 25, 0.85)",
-                    backdropFilter: "blur(10px)",
+                    borderBottom: "1px solid var(--border-glass)",
+                    backgroundColor: "var(--surface-glass)",
+                    backdropFilter: "blur(14px)",
+                    position: "relative",
                     zIndex: 10
                 }}
             >
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                    <Typography variant="h6" sx={{ fontWeight: 800, fontSize: "1.1rem" }}>
+                    <Typography variant="h6" sx={{ fontWeight: 800, fontSize: "1.1rem", color: "var(--text-primary)" }}>
                         Sabka Video Call
                     </Typography>
                     <Chip
@@ -504,9 +516,10 @@ export default function VideoMeetComponent() {
                         size="small"
                         sx={{
                             backgroundColor: "rgba(249, 115, 22, 0.15)",
-                            color: "#fb923c",
+                            color: "var(--accent-orange)",
                             fontFamily: "monospace",
-                            fontWeight: 700
+                            fontWeight: 700,
+                            border: "1px solid rgba(249, 115, 22, 0.3)"
                         }}
                     />
                     <Tooltip title="Copy Invite Link">
@@ -515,7 +528,7 @@ export default function VideoMeetComponent() {
                             variant="text"
                             onClick={handleCopyInviteLink}
                             startIcon={<ContentCopyIcon fontSize="small" />}
-                            sx={{ color: "#94a3b8", textTransform: "none", fontSize: "0.8rem" }}
+                            sx={{ color: "var(--text-muted)", textTransform: "none", fontSize: "0.8rem" }}
                         >
                             Copy Link
                         </Button>
@@ -523,6 +536,7 @@ export default function VideoMeetComponent() {
                 </Box>
 
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+                    <ThemeToggle />
                     <Chip
                         label={connectionStatus}
                         size="small"
@@ -669,6 +683,13 @@ export default function VideoMeetComponent() {
                     {snackbar.message}
                 </Alert>
             </Snackbar>
+
+            {/* Sci-Fi Glass Exit Modal */}
+            <LeaveMeetingModal
+                open={openLeaveModal}
+                onClose={() => setOpenLeaveModal(false)}
+                onConfirm={confirmEndCall}
+            />
         </Box>
     );
 }

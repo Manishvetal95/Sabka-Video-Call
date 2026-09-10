@@ -15,7 +15,8 @@ import {
     Snackbar,
     Alert,
     CircularProgress,
-    Tooltip
+    Tooltip,
+    Chip
 } from "@mui/material";
 import VideoCameraFrontIcon from "@mui/icons-material/VideoCameraFront";
 import AddBoxIcon from "@mui/icons-material/AddBox";
@@ -24,6 +25,8 @@ import HistoryIcon from "@mui/icons-material/History";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useAuth } from "../hooks/useAuth";
+import SpaceBackground from "../components/common/SpaceBackground";
+import ThemeToggle from "../components/common/ThemeToggle";
 
 export default function HomeComponent() {
     const navigate = useNavigate();
@@ -92,20 +95,22 @@ export default function HomeComponent() {
         });
     };
 
-    const username = user?.username || "Guest";
+    const username = user?.username || "Commander";
 
     return (
-        <Box sx={{ minHeight: "100vh", backgroundColor: "#0b0f19", color: "#f8fafc" }}>
-            {/* Dashboard Header */}
+        <Box sx={{ position: "relative", minHeight: "100vh", color: "var(--text-primary)", overflowX: "hidden" }}>
+            <SpaceBackground />
+
+            {/* Mission Control Header */}
             <Box
                 component="header"
                 sx={{
-                    borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
-                    backgroundColor: "rgba(11, 15, 25, 0.9)",
-                    backdropFilter: "blur(10px)",
                     position: "sticky",
                     top: 0,
-                    zIndex: 100
+                    zIndex: 100,
+                    backdropFilter: "blur(16px)",
+                    backgroundColor: "var(--surface-glass)",
+                    borderBottom: "1px solid var(--border)"
                 }}
             >
                 <Container maxWidth="lg">
@@ -129,52 +134,60 @@ export default function HomeComponent() {
                         >
                             <Box
                                 sx={{
-                                    width: 38,
-                                    height: 38,
-                                    borderRadius: "10px",
-                                    backgroundColor: "#f97316",
+                                    width: 40,
+                                    height: 40,
+                                    borderRadius: "12px",
+                                    background: "linear-gradient(135deg, #f97316 0%, #ec4899 100%)",
                                     display: "flex",
                                     alignItems: "center",
-                                    justifyContent: "center"
+                                    justifyContent: "center",
+                                    boxShadow: "0 0 20px rgba(249, 115, 22, 0.5)"
                                 }}
                             >
-                                <VideoCameraFrontIcon sx={{ color: "#ffffff", fontSize: 22 }} />
+                                <VideoCameraFrontIcon sx={{ color: "#ffffff", fontSize: 24 }} />
                             </Box>
-                            <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: -0.5 }}>
-                                Sabka Video Call
+                            <Typography variant="h6" sx={{ fontWeight: 900, letterSpacing: -0.5 }}>
+                                ✦ Mission Control
                             </Typography>
                         </Box>
 
                         {/* User Controls */}
-                        <Stack direction="row" spacing={2} alignItems="center">
-                            <Tooltip title="View Meeting History">
+                        <Stack direction="row" spacing={{ xs: 1, sm: 2 }} alignItems="center">
+                            <ThemeToggle />
+
+                            <Tooltip title="Flight Archive">
                                 <Button
                                     variant="outlined"
                                     onClick={() => navigate("/history")}
                                     startIcon={<HistoryIcon />}
                                     sx={{
-                                        color: "#e2e8f0",
-                                        borderColor: "rgba(255, 255, 255, 0.2)",
+                                        color: "var(--text-primary)",
+                                        borderColor: "var(--border)",
+                                        backgroundColor: "var(--surface-glass)",
+                                        backdropFilter: "blur(8px)",
                                         textTransform: "none",
-                                        fontWeight: 600,
+                                        fontWeight: 700,
+                                        borderRadius: "10px",
                                         "&:hover": {
-                                            borderColor: "#ffffff",
-                                            backgroundColor: "rgba(255, 255, 255, 0.05)"
+                                            borderColor: "var(--border-hover)",
+                                            backgroundColor: "rgba(255, 255, 255, 0.08)",
+                                            boxShadow: "0 0 15px var(--border-glow)"
                                         }
                                     }}
                                 >
-                                    History
+                                    Logs
                                 </Button>
                             </Tooltip>
 
                             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                                 <Avatar
                                     sx={{
-                                        bgcolor: "#f97316",
-                                        width: 36,
-                                        height: 36,
+                                        background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
+                                        width: 38,
+                                        height: 38,
                                         fontSize: "0.95rem",
-                                        fontWeight: 700
+                                        fontWeight: 800,
+                                        boxShadow: "0 0 15px rgba(249, 115, 22, 0.4)"
                                     }}
                                 >
                                     {username.charAt(0).toUpperCase()}
@@ -182,8 +195,8 @@ export default function HomeComponent() {
                                 <Typography
                                     variant="body2"
                                     sx={{
-                                        fontWeight: 600,
-                                        color: "#e2e8f0",
+                                        fontWeight: 700,
+                                        color: "var(--text-primary)",
                                         display: { xs: "none", sm: "block" }
                                     }}
                                 >
@@ -191,13 +204,13 @@ export default function HomeComponent() {
                                 </Typography>
                             </Box>
 
-                            <Tooltip title="Sign Out">
+                            <Tooltip title="Disconnect Session">
                                 <IconButton
                                     onClick={handleLogout}
                                     aria-label="sign out"
                                     sx={{
                                         color: "#ef4444",
-                                        "&:hover": { backgroundColor: "rgba(239, 68, 68, 0.1)" }
+                                        "&:hover": { backgroundColor: "rgba(239, 68, 68, 0.15)" }
                                     }}
                                 >
                                     <LogoutIcon fontSize="small" />
@@ -209,32 +222,38 @@ export default function HomeComponent() {
             </Box>
 
             {/* Main Content Area */}
-            <Container maxWidth="lg" sx={{ py: { xs: 6, md: 10 } }}>
+            <Container maxWidth="lg" sx={{ position: "relative", zIndex: 1, py: { xs: 6, md: 10 } }}>
                 {/* Welcome Message */}
                 <Box sx={{ mb: 6 }}>
+                    <Chip
+                        label="● SYSTEM STATUS: ONLINE"
+                        size="small"
+                        sx={{
+                            backgroundColor: "rgba(16, 185, 129, 0.15)",
+                            color: "#34d399",
+                            fontWeight: 800,
+                            letterSpacing: 1,
+                            fontSize: "0.75rem",
+                            mb: 2,
+                            border: "1px solid rgba(16, 185, 129, 0.3)"
+                        }}
+                    />
+
                     <Typography
                         variant="h3"
                         sx={{
-                            fontWeight: 800,
+                            fontWeight: 900,
                             letterSpacing: -1,
                             mb: 1
                         }}
                     >
                         Welcome back,{" "}
-                        <Box
-                            component="span"
-                            sx={{
-                                background: "linear-gradient(90deg, #f97316 0%, #fb923c 100%)",
-                                WebkitBackgroundClip: "text",
-                                WebkitTextFillColor: "transparent"
-                            }}
-                        >
+                        <Box component="span" className="heroic-text">
                             {username}
                         </Box>
-                        !
                     </Typography>
-                    <Typography variant="body1" sx={{ color: "#94a3b8", maxWidth: 600 }}>
-                        Start a secure video meeting with your team, join using an invite code, or review your previous call logs.
+                    <Typography variant="body1" sx={{ color: "var(--text-secondary)", maxWidth: 580, fontSize: "1.05rem" }}>
+                        Ready for your next mission? Launch an instant conference room, link to a team channel, or review your flight archive.
                     </Typography>
                 </Box>
 
@@ -243,38 +262,33 @@ export default function HomeComponent() {
                     {/* Card 1: Start Instant Meeting */}
                     <Grid item xs={12} md={4}>
                         <Card
+                            className="glass-panel glass-panel-hover"
                             sx={{
                                 height: "100%",
-                                backgroundColor: "rgba(255, 255, 255, 0.03)",
-                                border: "1px solid rgba(255, 255, 255, 0.08)",
-                                borderRadius: "20px",
-                                transition: "all 0.2s",
-                                "&:hover": {
-                                    borderColor: "rgba(249, 115, 22, 0.4)",
-                                    transform: "translateY(-4px)"
-                                }
+                                borderRadius: "24px"
                             }}
                         >
                             <CardContent sx={{ p: 4, display: "flex", flexDirection: "column", height: "100%" }}>
                                 <Box
                                     sx={{
-                                        width: 56,
-                                        height: 56,
-                                        borderRadius: "14px",
+                                        width: 58,
+                                        height: 58,
+                                        borderRadius: "16px",
                                         backgroundColor: "rgba(249, 115, 22, 0.15)",
                                         display: "flex",
                                         alignItems: "center",
                                         justifyContent: "center",
-                                        mb: 3
+                                        mb: 3,
+                                        boxShadow: "0 0 20px rgba(249, 115, 22, 0.3)"
                                     }}
                                 >
                                     <AddBoxIcon sx={{ fontSize: 32, color: "#f97316" }} />
                                 </Box>
-                                <Typography variant="h5" sx={{ fontWeight: 700, color: "#ffffff", mb: 1 }}>
-                                    New Meeting
+                                <Typography variant="h5" sx={{ fontWeight: 800, color: "var(--text-primary)", mb: 1 }}>
+                                    ✦ New Meeting
                                 </Typography>
-                                <Typography variant="body2" sx={{ color: "#94a3b8", mb: 4, flexGrow: 1 }}>
-                                    Generate an instant room and invite participants with full video, audio, screen share, and chat.
+                                <Typography variant="body2" sx={{ color: "var(--text-secondary)", mb: 4, flexGrow: 1, lineHeight: 1.6 }}>
+                                    Generate an instant encrypted room with full HD video, audio, screen share, and cosmic live chat.
                                 </Typography>
 
                                 <Stack spacing={1.5}>
@@ -284,15 +298,20 @@ export default function HomeComponent() {
                                         disabled={loadingNew}
                                         onClick={handleCreateInstantMeeting}
                                         sx={{
-                                            backgroundColor: "#f97316",
-                                            "&:hover": { backgroundColor: "#ea580c" },
-                                            py: 1.3,
-                                            fontWeight: 700,
-                                            borderRadius: "10px",
-                                            textTransform: "none"
+                                            background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
+                                            "&:hover": {
+                                                background: "linear-gradient(135deg, #fb923c 0%, #f97316 100%)",
+                                                boxShadow: "0 0 25px rgba(249, 115, 22, 0.6)",
+                                                transform: "translateY(-1px)"
+                                            },
+                                            py: 1.4,
+                                            fontWeight: 800,
+                                            borderRadius: "12px",
+                                            textTransform: "none",
+                                            fontSize: "0.95rem"
                                         }}
                                     >
-                                        {loadingNew ? <CircularProgress size={24} sx={{ color: "#ffffff" }} /> : "Start Instant Call"}
+                                        {loadingNew ? <CircularProgress size={24} sx={{ color: "#ffffff" }} /> : "Launch Instant Room"}
                                     </Button>
 
                                     <Button
@@ -301,15 +320,16 @@ export default function HomeComponent() {
                                         startIcon={<ContentCopyIcon />}
                                         onClick={handleCopyInstantLink}
                                         sx={{
-                                            borderColor: "rgba(255, 255, 255, 0.15)",
-                                            color: "#94a3b8",
+                                            borderColor: "var(--border)",
+                                            backgroundColor: "rgba(255, 255, 255, 0.03)",
+                                            color: "var(--text-secondary)",
                                             "&:hover": {
-                                                borderColor: "rgba(255, 255, 255, 0.3)",
-                                                color: "#ffffff"
+                                                borderColor: "var(--border-hover)",
+                                                color: "var(--text-primary)"
                                             },
                                             textTransform: "none",
-                                            fontWeight: 600,
-                                            borderRadius: "10px"
+                                            fontWeight: 700,
+                                            borderRadius: "12px"
                                         }}
                                     >
                                         Create & Copy Link
@@ -322,44 +342,39 @@ export default function HomeComponent() {
                     {/* Card 2: Join Meeting with Code */}
                     <Grid item xs={12} md={4}>
                         <Card
+                            className="glass-panel glass-panel-hover"
                             sx={{
                                 height: "100%",
-                                backgroundColor: "rgba(255, 255, 255, 0.03)",
-                                border: "1px solid rgba(255, 255, 255, 0.08)",
-                                borderRadius: "20px",
-                                transition: "all 0.2s",
-                                "&:hover": {
-                                    borderColor: "rgba(59, 130, 246, 0.4)",
-                                    transform: "translateY(-4px)"
-                                }
+                                borderRadius: "24px"
                             }}
                         >
                             <CardContent sx={{ p: 4, display: "flex", flexDirection: "column", height: "100%" }}>
                                 <Box
                                     sx={{
-                                        width: 56,
-                                        height: 56,
-                                        borderRadius: "14px",
-                                        backgroundColor: "rgba(59, 130, 246, 0.15)",
+                                        width: 58,
+                                        height: 58,
+                                        borderRadius: "16px",
+                                        backgroundColor: "rgba(6, 182, 212, 0.15)",
                                         display: "flex",
                                         alignItems: "center",
                                         justifyContent: "center",
-                                        mb: 3
+                                        mb: 3,
+                                        boxShadow: "0 0 20px rgba(6, 182, 212, 0.3)"
                                     }}
                                 >
-                                    <MeetingRoomIcon sx={{ fontSize: 32, color: "#3b82f6" }} />
+                                    <MeetingRoomIcon sx={{ fontSize: 32, color: "#06b6d4" }} />
                                 </Box>
-                                <Typography variant="h5" sx={{ fontWeight: 700, color: "#ffffff", mb: 1 }}>
-                                    Join Meeting
+                                <Typography variant="h5" sx={{ fontWeight: 800, color: "var(--text-primary)", mb: 1 }}>
+                                    ◉ Join Meeting
                                 </Typography>
-                                <Typography variant="body2" sx={{ color: "#94a3b8", mb: 4, flexGrow: 1 }}>
-                                    Enter a meeting code or room link provided by the call host to join their session.
+                                <Typography variant="body2" sx={{ color: "var(--text-secondary)", mb: 4, flexGrow: 1, lineHeight: 1.6 }}>
+                                    Enter a meeting room code or link ID transmitted by the call host to connect to their session.
                                 </Typography>
 
                                 <Box component="form" onSubmit={handleJoinMeeting} sx={{ mt: "auto" }}>
                                     <TextField
                                         fullWidth
-                                        placeholder="e.g. meeting-101"
+                                        placeholder="e.g. mission-101"
                                         value={joinCode}
                                         onChange={(e) => {
                                             setJoinCode(e.target.value);
@@ -370,11 +385,8 @@ export default function HomeComponent() {
                                         sx={{
                                             mb: 2,
                                             backgroundColor: "rgba(255, 255, 255, 0.04)",
-                                            borderRadius: "10px",
-                                            input: { color: "#ffffff" },
-                                            "& .MuiOutlinedInput-notchedOutline": {
-                                                borderColor: "rgba(255, 255, 255, 0.15)"
-                                            }
+                                            borderRadius: "12px",
+                                            input: { color: "var(--text-primary)" }
                                         }}
                                     />
                                     <Button
@@ -383,15 +395,20 @@ export default function HomeComponent() {
                                         fullWidth
                                         disabled={loadingJoin}
                                         sx={{
-                                            backgroundColor: "#3b82f6",
-                                            "&:hover": { backgroundColor: "#2563eb" },
-                                            py: 1.3,
-                                            fontWeight: 700,
-                                            borderRadius: "10px",
-                                            textTransform: "none"
+                                            background: "linear-gradient(135deg, #06b6d4 0%, #0284c7 100%)",
+                                            "&:hover": {
+                                                background: "linear-gradient(135deg, #38bdf8 0%, #06b6d4 100%)",
+                                                boxShadow: "0 0 25px rgba(6, 182, 212, 0.6)",
+                                                transform: "translateY(-1px)"
+                                            },
+                                            py: 1.4,
+                                            fontWeight: 800,
+                                            borderRadius: "12px",
+                                            textTransform: "none",
+                                            fontSize: "0.95rem"
                                         }}
                                     >
-                                        {loadingJoin ? <CircularProgress size={24} sx={{ color: "#ffffff" }} /> : "Join Call"}
+                                        {loadingJoin ? <CircularProgress size={24} sx={{ color: "#ffffff" }} /> : "Connect to Room"}
                                     </Button>
                                 </Box>
                             </CardContent>
@@ -401,38 +418,33 @@ export default function HomeComponent() {
                     {/* Card 3: Meeting History Shortcut */}
                     <Grid item xs={12} md={4}>
                         <Card
+                            className="glass-panel glass-panel-hover"
                             sx={{
                                 height: "100%",
-                                backgroundColor: "rgba(255, 255, 255, 0.03)",
-                                border: "1px solid rgba(255, 255, 255, 0.08)",
-                                borderRadius: "20px",
-                                transition: "all 0.2s",
-                                "&:hover": {
-                                    borderColor: "rgba(139, 92, 246, 0.4)",
-                                    transform: "translateY(-4px)"
-                                }
+                                borderRadius: "24px"
                             }}
                         >
                             <CardContent sx={{ p: 4, display: "flex", flexDirection: "column", height: "100%" }}>
                                 <Box
                                     sx={{
-                                        width: 56,
-                                        height: 56,
-                                        borderRadius: "14px",
+                                        width: 58,
+                                        height: 58,
+                                        borderRadius: "16px",
                                         backgroundColor: "rgba(139, 92, 246, 0.15)",
                                         display: "flex",
                                         alignItems: "center",
                                         justifyContent: "center",
-                                        mb: 3
+                                        mb: 3,
+                                        boxShadow: "0 0 20px rgba(139, 92, 246, 0.3)"
                                     }}
                                 >
                                     <HistoryIcon sx={{ fontSize: 32, color: "#8b5cf6" }} />
                                 </Box>
-                                <Typography variant="h5" sx={{ fontWeight: 700, color: "#ffffff", mb: 1 }}>
-                                    Activity Logs
+                                <Typography variant="h5" sx={{ fontWeight: 800, color: "var(--text-primary)", mb: 1 }}>
+                                    ◷ Flight Archive
                                 </Typography>
-                                <Typography variant="body2" sx={{ color: "#94a3b8", mb: 4, flexGrow: 1 }}>
-                                    Review all your previous meeting timestamps, codes, and easily rejoin recurring meetings.
+                                <Typography variant="body2" sx={{ color: "var(--text-secondary)", mb: 4, flexGrow: 1, lineHeight: 1.6 }}>
+                                    Review all your previous meeting timestamps, codes, and easily rejoin recurring squad conferences.
                                 </Typography>
 
                                 <Button
@@ -440,16 +452,21 @@ export default function HomeComponent() {
                                     fullWidth
                                     onClick={() => navigate("/history")}
                                     sx={{
-                                        backgroundColor: "#8b5cf6",
-                                        "&:hover": { backgroundColor: "#7c3aed" },
-                                        py: 1.3,
-                                        fontWeight: 700,
-                                        borderRadius: "10px",
+                                        background: "linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)",
+                                        "&:hover": {
+                                            background: "linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)",
+                                            boxShadow: "0 0 25px rgba(139, 92, 246, 0.6)",
+                                            transform: "translateY(-1px)"
+                                        },
+                                        py: 1.4,
+                                        fontWeight: 800,
+                                        borderRadius: "12px",
                                         textTransform: "none",
+                                        fontSize: "0.95rem",
                                         mt: "auto"
                                     }}
                                 >
-                                    View Past History
+                                    Open Archive Logs
                                 </Button>
                             </CardContent>
                         </Card>
@@ -467,7 +484,7 @@ export default function HomeComponent() {
                 <Alert
                     onClose={() => setSnackbar({ ...snackbar, open: false })}
                     severity={snackbar.severity}
-                    sx={{ width: "100%" }}
+                    sx={{ width: "100%", backdropFilter: "blur(12px)", borderRadius: "12px" }}
                 >
                     {snackbar.message}
                 </Alert>

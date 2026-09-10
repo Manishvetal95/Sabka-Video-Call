@@ -49,9 +49,10 @@ export const ChatDrawer = ({
             PaperProps={{
                 sx: {
                     width: { xs: "100%", sm: 360 },
-                    backgroundColor: "#0f172a",
-                    color: "#f8fafc",
-                    borderLeft: "1px solid rgba(255, 255, 255, 0.1)",
+                    backgroundColor: "var(--bg-secondary)",
+                    color: "var(--text-primary)",
+                    borderLeft: "1px solid var(--border-glass)",
+                    backdropFilter: "blur(16px)",
                     display: "flex",
                     flexDirection: "column"
                 }
@@ -64,19 +65,20 @@ export const ChatDrawer = ({
                     alignItems: "center",
                     justifyContent: "space-between",
                     p: 2,
-                    borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
-                    backgroundColor: "rgba(15, 23, 42, 0.95)"
+                    borderBottom: "1px solid var(--border-glass)",
+                    backgroundColor: "var(--surface-glass)",
+                    backdropFilter: "blur(10px)"
                 }}
             >
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <Typography variant="h6" sx={{ fontWeight: 700, fontSize: "1.05rem" }}>
+                    <Typography variant="h6" sx={{ fontWeight: 700, fontSize: "1.05rem", color: "var(--text-primary)" }}>
                         In-Call Messages
                     </Typography>
-                    <Typography variant="caption" sx={{ color: "#94a3b8" }}>
+                    <Typography variant="caption" sx={{ color: "var(--text-muted)" }}>
                         ({messages.length})
                     </Typography>
                 </Box>
-                <IconButton onClick={onClose} sx={{ color: "#94a3b8", "&:hover": { color: "#ffffff" } }} aria-label="close chat">
+                <IconButton onClick={onClose} sx={{ color: "var(--text-muted)", "&:hover": { color: "var(--text-primary)" } }} aria-label="close chat">
                     <CloseIcon fontSize="small" />
                 </IconButton>
             </Box>
@@ -128,7 +130,7 @@ export const ChatDrawer = ({
                                     variant="caption"
                                     sx={{
                                         display: "block",
-                                        color: isMe ? "#f97316" : "#38bdf8",
+                                        color: isMe ? "var(--accent-orange)" : "var(--accent-cyan)",
                                         fontWeight: 700,
                                         mb: 0.3,
                                         px: 0.5,
@@ -142,10 +144,12 @@ export const ChatDrawer = ({
                                     sx={{
                                         p: 1.5,
                                         borderRadius: isMe ? "14px 14px 2px 14px" : "14px 14px 14px 2px",
-                                        backgroundColor: isMe ? "#f97316" : "#1e293b",
-                                        color: "#ffffff",
+                                        backgroundColor: isMe ? "var(--accent-orange)" : "var(--bg-card)",
+                                        color: isMe ? "#ffffff" : "var(--text-primary)",
+                                        border: isMe ? "none" : "1px solid var(--border-glass)",
                                         wordBreak: "break-word",
-                                        fontSize: "0.9rem"
+                                        fontSize: "0.9rem",
+                                        boxShadow: isMe ? "0 4px 15px rgba(249, 115, 22, 0.3)" : "none"
                                     }}
                                 >
                                     {msg.data}
@@ -163,8 +167,9 @@ export const ChatDrawer = ({
                 onSubmit={handleSend}
                 sx={{
                     p: 2,
-                    borderTop: "1px solid rgba(255, 255, 255, 0.08)",
-                    backgroundColor: "rgba(15, 23, 42, 0.95)",
+                    borderTop: "1px solid var(--border-glass)",
+                    backgroundColor: "var(--surface-glass)",
+                    backdropFilter: "blur(10px)",
                     display: "flex",
                     gap: 1
                 }}
@@ -172,15 +177,18 @@ export const ChatDrawer = ({
                 <TextField
                     fullWidth
                     size="small"
-                    placeholder="Send a message..."
+                    placeholder="Send a transmission..."
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
                     sx={{
-                        backgroundColor: "rgba(255, 255, 255, 0.05)",
+                        backgroundColor: "var(--bg-card)",
                         borderRadius: "8px",
-                        input: { color: "#ffffff", fontSize: "0.9rem" },
+                        input: { color: "var(--text-primary)", fontSize: "0.9rem" },
                         "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "rgba(255, 255, 255, 0.15)"
+                            borderColor: "var(--border-glass)"
+                        },
+                        "&:hover .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "var(--accent-cyan)"
                         }
                     }}
                 />
@@ -189,7 +197,7 @@ export const ChatDrawer = ({
                     variant="contained"
                     disabled={!inputMessage.trim()}
                     sx={{
-                        backgroundColor: "#f97316",
+                        backgroundColor: "var(--accent-orange)",
                         "&:hover": { backgroundColor: "#ea580c" },
                         minWidth: 44,
                         p: 1,

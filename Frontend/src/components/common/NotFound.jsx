@@ -4,62 +4,77 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import HomeIcon from "@mui/icons-material/Home";
+import SpaceBackground from "./SpaceBackground";
 
 export const NotFound = () => {
     return (
         <Box
             sx={{
+                position: "relative",
                 minHeight: "100vh",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                background: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)",
-                color: "#f8fafc",
+                color: "var(--text-primary)",
                 textAlign: "center",
-                padding: 3
+                padding: 3,
+                overflow: "hidden"
             }}
         >
-            <Typography
-                variant="h1"
-                sx={{
-                    fontSize: { xs: "5rem", md: "8rem" },
-                    fontWeight: 800,
-                    background: "linear-gradient(90deg, #f97316, #fb923c)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    mb: 1
-                }}
-            >
-                404
-            </Typography>
-            <Typography variant="h4" sx={{ fontWeight: 600, mb: 2 }}>
-                Page Not Found
-            </Typography>
-            <Typography
-                variant="body1"
-                sx={{ color: "#94a3b8", maxWidth: "480px", mb: 4 }}
-            >
-                The page or meeting link you are trying to access does not exist or has been moved.
-            </Typography>
-            <Button
-                component={Link}
-                to="/home"
-                variant="contained"
-                startIcon={<HomeIcon />}
-                sx={{
-                    backgroundColor: "#f97316",
-                    "&:hover": { backgroundColor: "#ea580c" },
-                    px: 3,
-                    py: 1.2,
-                    borderRadius: "10px",
-                    fontWeight: 600,
-                    textTransform: "none",
-                    fontSize: "1rem"
-                }}
-            >
-                Return to Dashboard
-            </Button>
+            <SpaceBackground />
+
+            <Box sx={{ position: "relative", zIndex: 1 }}>
+                <Typography
+                    variant="h1"
+                    sx={{
+                        fontSize: { xs: "6rem", md: "9rem" },
+                        fontWeight: 900,
+                        letterSpacing: -2,
+                        background: "linear-gradient(135deg, #f97316 0%, #fb923c 40%, #ec4899 100%)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        mb: 1,
+                        filter: "drop-shadow(0 0 35px rgba(249, 115, 22, 0.4))"
+                    }}
+                >
+                    404
+                </Typography>
+
+                <Typography variant="h4" sx={{ fontWeight: 800, mb: 1.5 }}>
+                    Lost in Space?
+                </Typography>
+
+                <Typography
+                    variant="body1"
+                    sx={{ color: "var(--text-secondary)", maxWidth: 460, mb: 4, fontSize: "1.05rem" }}
+                >
+                    The page or meeting link you are searching for has drifted away beyond the galaxy or never existed.
+                </Typography>
+
+                <Button
+                    component={Link}
+                    to="/home"
+                    variant="contained"
+                    startIcon={<HomeIcon />}
+                    sx={{
+                        background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
+                        "&:hover": {
+                            background: "linear-gradient(135deg, #fb923c 0%, #f97316 100%)",
+                            boxShadow: "0 0 25px rgba(249, 115, 22, 0.6)"
+                        },
+                        px: 3.5,
+                        py: 1.4,
+                        borderRadius: "12px",
+                        fontWeight: 800,
+                        textTransform: "none",
+                        fontSize: "1rem",
+                        boxShadow: "0 10px 25px -5px rgba(249, 115, 22, 0.4)"
+                    }}
+                >
+                    Return to Mission Control
+                </Button>
+            </Box>
         </Box>
     );
 };
