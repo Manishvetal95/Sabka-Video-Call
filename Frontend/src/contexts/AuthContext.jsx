@@ -1,98 +1,101 @@
-import axios from "axios";
-import httpStatus from "http-status";
-import { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import server from "../environment";
+import { authService } from "../services/auth.service";
+import { meetingService } from "../services/meeting.service";
 
-
-export const AuthContext = createContext({});
-
-const client = axios.create({
-    baseURL: `${server}/api/v1/users`
-})
-
+export const AuthContext = createContext({
+    user: null,
+    token: null,
+    isAuthenticated: false,
+    loading: true,
+    userData: null,
+    setUserData: () => {},
+    handleLogin: async () => {},
+    handleRegister: async () => {},
+    handleLogout: () => {},
+    addToUserHistory: async () => {},
+    getHistoryOfUser: async () => []
+});
 
 export const AuthProvider = ({ children }) => {
+    const [token, setToken] = useState(() => authService.getToken());
+    const [user, setUser] = useState(() => authService.getCurrentUser());
+    const [userData, setUserData] = useState(() => authService.getCurrentUser());
+    const [loading, setLoading] = useState(true);
 
-    const authContext = useContext(AuthContext);
+    const navigate = useNavigate();
 
-
-    const [userData, setUserData] = useState(authContext);
-
-
-    const router = useNavigate();
-
-    const handleRegister = async (name, username, password) => {
-        try {
-            let request = await client.post("/register", {
-                name: name,
-                username: username,
-                password: password
-            })
-
-
-            if (request.status === httpStatus.CREATED) {
-                return request.data.message;
-            }
-        } catch (err) {
-            throw err;
+    // Hydrate auth state on initial mount
+    useEffect(() => {
+        const storedToken = authService.getToken();
+        const storedUser = authService.getCurrentUser();
+        if (storedToken) {
+            setToken(storedToken);
+            setUser(storedUser);
+            setUserData(storedUser);
+        } else {
+            setToken(null);
+            setUser(null);
+            setUserData(null);
         }
-    }
+        setLoading(false);
+    }, []);
 
     const handleLogin = async (username, password) => {
-        try {
-            let request = await client.post("/login", {
-                username: username,
-                password: password
-            });
+        const authData = await authService.login(username, password);
+        setToken(authData.token);
+        setUser({ username: authData.username });
+        setUserData({ username: authData.username });
+        navigate("/home");
+        return authData;
+    };
 
-            console.log(username, password)
-            console.log(request.data)
+    const handleRegister = async (name, username, password) => {
+        return await authService.register(name, username, password);
+    };
 
-            if (request.status === httpStatus.OK) {
-                localStorage.setItem("token", request.data.token);
-                router("/home")
-            }
-        } catch (err) {
-            throw err;
-        }
-    }
+    const handleLogout = () => {
+        authService.logout();
+        setToken(null);
+        setUser(null);
+        setUserData(null);
+        navigate("/auth");
+    };
 
     const getHistoryOfUser = async () => {
-        try {
-            let request = await client.get("/get_all_activity", {
-                params: {
-                    token: localStorage.getItem("token")
-                }
-            });
-            return request.data
-        } catch
-         (err) {
-            throw err;
-        }
-    }
+        return await meetingService.getUserHistory();
+    };
 
     const addToUserHistory = async (meetingCode) => {
-        try {
-            let request = await client.post("/add_to_activity", {
-                token: localStorage.getItem("token"),
-                meeting_code: meetingCode
-            });
-            return request
-        } catch (e) {
-            throw e;
-        }
+        return await meetingService.addToHistory(meetingCode);
+    };
+
+    const value = {
+        user,
+        token,
+        isAuthenticated: Boolean(token),
+        loading,
+        userData,
+        setUserData,
+        handleLogin,
+        handleRegister,
+        handleLogout,
+        addToUserHistory,
+        getHistoryOfUser
+    };
+
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+/**
+ * Custom hook to consume authentication context conveniently.
+ */
+export const useAuth = () => {
+    const context = useContext(AuthContext);
+    if (!context) {
+        throw new Error("useAuth must be used within an AuthProvider");
     }
+    return context;
+};
 
-
-    const data = {
-        userData, setUserData, addToUserHistory, getHistoryOfUser, handleRegister, handleLogin
-    }
-
-    return (
-        <AuthContext.Provider value={data}>
-            {children}
-        </AuthContext.Provider>
-    )
-
-}
+export default AuthContext;

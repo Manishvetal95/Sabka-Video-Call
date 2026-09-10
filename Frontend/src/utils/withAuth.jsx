@@ -1,27 +1,39 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom"
+import React from "react";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 
-const withAuth = (WrappedComponent ) => {
+/**
+ * Higher-order component to enforce authentication requirements.
+ */
+const withAuth = (WrappedComponent) => {
     const AuthComponent = (props) => {
-        const router = useNavigate();
+        const { isAuthenticated, loading } = useAuth();
 
-        const isAuthenticated = () => {
-            if(localStorage.getItem("token")) {
-                return true;
-            } 
-            return false;
+        if (loading) {
+            return (
+                <Box
+                    sx={{
+                        display: "flex",
+                        height: "100vh",
+                        alignItems: "center",
+                        justifyContent: "center"
+                    }}
+                >
+                    <CircularProgress />
+                </Box>
+            );
         }
 
-        useEffect(() => {
-            if(!isAuthenticated()) {
-                router("/auth")
-            }
-        }, [])
+        if (!isAuthenticated) {
+            return <Navigate to="/auth" replace />;
+        }
 
-        return <WrappedComponent {...props} />
-    }
+        return <WrappedComponent {...props} />;
+    };
 
     return AuthComponent;
-}
+};
 
 export default withAuth;
